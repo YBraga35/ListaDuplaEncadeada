@@ -74,11 +74,15 @@ public class ListaDupla {
 		novo.setValor(valor);
 
 		if (this.inicio == null) {
-			System.out.println("Lista Vazia!");
+			System.out.println("Lista Vazia!/n Sendo preenchida . . .");
 			this.inicio = novo;
 		} else {
 			aux = inicio;
 			while (aux.getProx() != null) {
+				aux.getProx();
+			}
+			while (aux.getAnter() != this.inicio) {
+				
 				if (aux.getValor() < novo.getValor()) {
 					aux.setProx(novo);
 					novo.setAnter(aux);
@@ -89,7 +93,8 @@ public class ListaDupla {
 				}
 				if (aux.getValor() > novo.getValor()) {
 					this.insereInicio(valor);
-				} else {
+				} 
+				/*else {
 					
 						while (aux.getValor() < novo.getValor()
 								&& (aux.getProx() != null || aux.getProx().getValor() < novo.getValor())) {
@@ -104,7 +109,7 @@ public class ListaDupla {
 							aux.setProx(novo);
 							novo.setAnter(aux);
 						}
-					}
+					}*/
 				}
 				aux.getProx();
 			}
