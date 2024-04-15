@@ -1,46 +1,45 @@
 package exercicioPrincipal;
 
-public class ListaDupla {
-
+public class ListaDuplaEncadeada {
 	private Nodo inicio;
 	private int contador = 0;
 
-	public ListaDupla() {
+	public ListaDuplaEncadeada() {
 		this.inicio = null;
 	}
 
-	public void insereFinal(int valor) {
-		Nodo novo = new Nodo();
-		novo.setAnter(null);
-		novo.setProx(null);
-		novo.setValor(valor);
-
-		if (this.inicio == null) {
-			this.inicio = novo;
-		} else {
-			Nodo aux = inicio;
-			while (aux.getProx() != null) {
-				aux = aux.getProx();
-			}
-			aux.setProx(novo);
-			novo.setAnter(aux);
-		}
-	}
-
-	public void insereInicio(int valor) {
-		Nodo novo = new Nodo();
-		novo.setAnter(null);
-		novo.setProx(null);
-		novo.setValor(valor);
-
-		if (this.inicio == null) {
-			this.inicio = novo;
-		} else {
-			novo.setProx(this.inicio);
-			this.inicio.setAnter(novo);
-		}
-		this.inicio = novo;
-	}
+//	public void insereFinal(int valor) {
+//		Nodo novo = new Nodo();
+//		novo.setAnter(null);
+//		novo.setProx(null);
+//		novo.setValor(valor);
+//
+//		if (this.inicio == null) {
+//			this.inicio = novo;
+//		} else {
+//			Nodo aux = inicio;
+//			while (aux.getProx() != null) {
+//				aux = aux.getProx();
+//			}
+//			aux.setProx(novo);
+//			novo.setAnter(aux);
+//		}
+//	}
+//
+//	public void insereInicio(int valor) {
+//		Nodo novo = new Nodo();
+//		novo.setAnter(null);
+//		novo.setProx(null);
+//		novo.setValor(valor);
+//
+//		if (this.inicio == null) {
+//			this.inicio = novo;
+//		} else {
+//			novo.setProx(this.inicio);
+//			this.inicio.setAnter(novo);
+//		}
+//		this.inicio = novo;
+//	}
 
 	public Nodo pesquisa(int valor) {
 		Nodo aux = this.inicio;
@@ -71,15 +70,12 @@ public class ListaDupla {
 
 	public void insereCrescente(int valor) {
 		Nodo aux = null;
-		Nodo novo = new Nodo();
-		novo.setAnter(null);
-		novo.setProx(null);
-		novo.setValor(valor);
+		Nodo novo = new Nodo(valor, null, null);
 		contador++;
-		System.out.println("\n" + contador + " nodos criados");
+		System.out.println("\n" + contador + " nodo(s) criado(s)");
 
 		if (this.inicio == null) {
-			System.out.println("Lista Vazia!/n Sendo preenchida . . .");
+			System.out.println("Lista Vazia!\nSendo preenchida . . .");
 			this.inicio = novo;
 		} else {
 			aux = this.inicio;
@@ -95,72 +91,49 @@ public class ListaDupla {
 				}
 			} else {
 				// Se chegou aqui tem mais de 1 nodo
-				if (aux.getProx() == null || aux.getAnter() == this.inicio) {
-					if (aux.getValor() < novo.getValor()) {
-						aux.setProx(novo);
-						novo.setAnter(aux);
-					}
-					else {
-						aux.getAnter().setProx(novo);
-						aux.setAnter(novo);
-						novo.setProx(aux);
-						novo.setAnter(this.inicio);
-					}
-				}
-				while (aux.getProx() != null) {
-					// While para chegar ate o fim da lista
-					System.out.println("Entrou 100");
-					if (novo.getValor() < aux.getValor()) {
-						// Se o valor do novo for maior que o valor do proximo ele passa
-						aux.getProx().setAnter(novo);
-						novo.setProx(aux.getProx());
-						aux.setProx(novo);
+				if (aux.getValor() < novo.getValor()) {
+					if (aux.getProx().getProx() == null) {
+						if (aux.getProx().getValor() > novo.getValor()) {
+							aux.getProx().setAnter(novo);
+							novo.setProx(aux.getProx());
+							novo.setAnter(aux);
+							aux.setProx(novo);
+						} else {
+							aux.getProx().setProx(novo);
+							novo.setAnter(aux.getProx());
+						}
 					} else {
+						// Se chegou aqui, tem mais de 2 nodos
+						System.out.println("aux.getValor() inicio "+aux.getValor());
+						while (aux.getProx() != null) {
+							if (aux.getProx().getValor() > novo.getValor()) {
+								System.out.println("aux.getValor() dentro do if "+aux.getValor());
+								aux.getProx().setAnter(novo);
+								novo.setProx(aux.getProx());
+								novo.setAnter(aux);
+								aux.setProx(novo);
+								//aux = aux.getProx();
+								break;
+							}
+							aux = aux.getProx();
+
+							System.out.println("aux.getValor() apos while "+aux.getValor());
+
+						}
+						if (aux.getValor() < novo.getValor()) {
+							aux.setProx(novo);
+							novo.setAnter(aux);
+						}
 					}
-					aux = aux.getProx();
+				} else {
+					// Inserção de menor no começo
+					aux.setAnter(novo);
+					novo.setProx(aux);
+					this.inicio = novo;
 
 				}
-				if (aux.getAnter() == this.inicio) {
-					if (novo.getValor() < aux.getValor()) {
-						// Se o valor do novo for maior que o valor do proximo ele passa
-						novo.setAnter(aux.getAnter());
-						novo.setProx(aux);
-						aux.setAnter(novo);
-						aux.getAnter().setProx(novo);
 
-					} else {
-					}
-				}
-				// Se chegou aqui tem mais de 2 nodos na lista e aux esta no final
-				while (aux.getAnter() != this.inicio) {
-					System.out.println("Entrou 113");
-					if (aux.getValor() < novo.getValor()) {
-						imprimeListaDupla();
-						aux.setProx(novo);
-						novo.setAnter(aux);
-						System.out.println("Novo é maior 108");
-					} else {
-						System.out.println("Novo é menor 120");
-						aux.setAnter(novo);
-						novo.setProx(aux);
-					}
-					if (aux.getValor() > novo.getValor()) {
-						System.out.println("Novo é menor 110");
-						this.insereInicio(valor);
-					}
-					/*
-					 * else {
-					 * 
-					 * while (aux.getValor() < novo.getValor() && (aux.getProx() != null ||
-					 * aux.getProx().getValor() < novo.getValor())) { aux = aux.getProx(); } if
-					 * (aux.getProx() == null) { novo.setAnter(aux); aux.setProx(novo); } else {
-					 * aux.getProx().setAnter(novo); novo.setProx(aux.getProx()); aux.setProx(novo);
-					 * novo.setAnter(aux); } }
-					 */
-					aux = aux.getAnter();
-				}
 			}
-
 		}
 	}
 
